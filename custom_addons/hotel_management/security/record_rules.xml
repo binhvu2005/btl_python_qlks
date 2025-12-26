@@ -1,0 +1,11 @@
+<odoo>
+  <data noupdate="1">
+    <!-- Receptionist can only see draft or confirmed bookings, not done -->
+    <record id="rule_hotel_booking_receptionist" model="ir.rule">
+      <field name="name">Booking - Receptionist sees draft/confirmed only</field>
+      <field name="model_id" ref="model_hotel_booking"/>
+      <field name="groups" eval="[(4, ref('hotel_management.group_hotel_receptionist'))]"/>
+      <field name="domain_force">[('state', 'in', ['draft', 'confirmed'])]</field>
+    </record>
+  </data>
+</odoo>

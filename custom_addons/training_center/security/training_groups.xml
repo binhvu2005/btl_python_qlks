@@ -1,0 +1,9 @@
+<odoo>
+    <record id="group_training_user" model="res.groups">
+        <field name="name">TC: Training User (Giáo vụ)</field>
+    </record>
+
+    <record id="group_training_manager" model="res.groups">
+        <field name="name">TC: Training Manager (Quản lý)</field>
+    </record>
+</odoo>

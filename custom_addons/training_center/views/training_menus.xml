@@ -1,0 +1,15 @@
+<odoo>
+
+    <record id="action_training_class" model="ir.actions.act_window">
+        <field name="name">Lớp học đang mở</field>
+        <field name="res_model">training.class</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <menuitem id="menu_training_root" name="Hệ thống Đào tạo" sequence="10"/>
+
+    <menuitem id="menu_training_class" name="Lớp học đang mở" parent="menu_training_root" action="action_training_class" sequence="1"/>
+
+    <menuitem id="menu_training_config" name="Cấu hình" parent="menu_training_root" sequence="100"/>
+
+</odoo>
