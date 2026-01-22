@@ -1,0 +1,182 @@
+<odoo>
+    <record id="view_edu_session_tree" model="ir.ui.view">
+        <field name="name">edu.session.tree</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <tree decoration-danger="taken_seats > 100" decoration-info="duration &lt; 5">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="course_id"/>
+                <field name="instructor_id"/>
+                <field name="classroom_id"/>
+                <field name="duration"/>
+                <field name="start_date"/>
+                <field name="end_date"/>
+                <field name="taken_seats" widget="progressbar"/>
+                <field name="state"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_edu_session_search" model="ir.ui.view">
+        <field name="name">edu.session.search</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <search string="Tìm lớp học">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="course_id"/>
+                <field name="instructor_id"/>
+                <filter name="state_draft" string="Dự thảo" domain="[('state','=','draft')]"/>
+                <filter name="state_open" string="Mở đăng ký" domain="[('state','=','open')]"/>
+                <filter name="state_done" string="Kết thúc" domain="[('state','=','done')]"/>
+                <filter name="state_cancel" string="Hủy" domain="[('state','=','cancel')]"/>
+                <filter name="this_week" string="Lớp khai giảng tuần này"
+                        domain="[('start_date','&gt;=', context_today())]"/>
+                <filter name="revenue_high" string="Doanh thu &gt; 10 triệu" domain="[('revenue','&gt;',10000000)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Khóa học" name="group_course" context="{'group_by':'course_id'}"/>
+                    <filter string="Giảng viên" name="group_instructor" context="{'group_by':'instructor_id'}"/>
+                    <filter string="Trạng thái" name="group_state" context="{'group_by':'state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_edu_session_form" model="ir.ui.view">
+        <field name="name">edu.session.form</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <form string="Lớp học">
+                <header>
+                    <button name="action_open" string="Mở đăng ký" type="object" 
+                            class="oe_highlight" modifiers="{'invisible': [['state', '!=', 'draft']]}"/>
+                    <button name="action_done" string="Kết thúc" type="object" 
+                            modifiers="{'invisible': [['state', '!=', 'open']]}"/>
+                    <button name="action_cancel" string="Hủy" type="object" 
+                            modifiers="{'invisible': [['state', 'in', ['done', 'cancel']]]}"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,open,done,cancel"/>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="code" readonly="1" placeholder="Tự động sinh"/>
+                            <field name="course_id" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="product_id" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                        </group>
+                        <group>
+                            <field name="instructor_id" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="classroom_id" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="seats" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="start_date" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="duration" modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                            <field name="end_date" readonly="1"/>
+                        </group>
+                    </group>
+                    <group>
+                        <group>
+                            <field name="taken_seats" widget="progressbar" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="revenue" readonly="1" groups="edu_management.group_edu_manager"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Học viên">
+                            <field name="attendee_ids" widget="many2many_tags" 
+                                   modifiers="{'readonly': [['state', '=', 'done']]}"/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_edu_session_kanban" model="ir.ui.view">
+        <field name="name">edu.session.kanban</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <kanban default_group_by="course_id" class="o_kanban_small_column">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="course_id"/>
+                <field name="instructor_id"/>
+                <field name="start_date"/>
+                <field name="state"/>
+                <field name="attendee_ids"/>
+                <templates>
+                    <t t-name="card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
+                            <div class="o_kanban_image">
+                                <strong><field name="code"/></strong>
+                            </div>
+                            <div class="oe_kanban_details">
+                                <strong><field name="name"/></strong>
+                                <div>Khóa: <field name="course_id"/></div>
+                                <div>Giảng viên: <field name="instructor_id"/></div>
+                                <div>Ngày bắt đầu: <field name="start_date"/></div>
+                                <div>Số học viên: <field name="attendee_ids" widget="many2many_tags"/></div>
+                                <div>Trạng thái: <field name="state"/></div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <record id="view_edu_session_calendar" model="ir.ui.view">
+        <field name="name">edu.session.calendar</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <calendar string="Lịch lớp học" date_start="start_date" date_stop="end_date" color="course_id">
+                <field name="name"/>
+                <field name="code"/>
+                <field name="course_id"/>
+                <field name="instructor_id"/>
+            </calendar>
+        </field>
+    </record>
+
+    <record id="view_edu_session_pivot" model="ir.ui.view">
+        <field name="name">edu.session.pivot</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <pivot string="Phân tích doanh thu">
+                <field name="revenue" type="measure"/>
+                <field name="course_id" type="row"/>
+                <field name="instructor_id" type="row"/>
+                <field name="start_date" interval="month" type="col"/>
+            </pivot>
+        </field>
+    </record>
+
+    <record id="view_edu_session_graph_bar" model="ir.ui.view">
+        <field name="name">edu.session.graph.bar</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <graph string="So sánh số lượng học viên" type="bar">
+                <field name="course_id" type="row"/>
+                <field name="attendee_ids" type="measure"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="view_edu_session_graph_pie" model="ir.ui.view">
+        <field name="name">edu.session.graph.pie</field>
+        <field name="model">edu.session</field>
+        <field name="arch" type="xml">
+            <graph string="Tỉ lệ lớp theo trạng thái" type="pie">
+                <field name="state" type="row"/>
+            </graph>
+        </field>
+    </record>
+
+    <record id="action_edu_session" model="ir.actions.act_window">
+        <field name="name">Lớp học</field>
+        <field name="res_model">edu.session</field>
+        <field name="view_mode">tree,form,kanban,calendar,pivot,graph</field>
+        <field name="search_view_id" ref="view_edu_session_search"/>
+    </record>
+</odoo>

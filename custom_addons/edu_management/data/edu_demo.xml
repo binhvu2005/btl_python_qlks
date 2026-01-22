@@ -1,0 +1,38 @@
+<odoo>
+    <data>
+        <record id="edu_subject_it" model="edu.subject">
+            <field name="name">Công nghệ thông tin</field>
+            <field name="code">IT</field>
+            <field name="description">Chuyên ngành lập trình và hệ thống.</field>
+        </record>
+
+        <record id="edu_course_python_basic" model="edu.course">
+            <field name="name">Python cơ bản</field>
+            <field name="description">Khóa học nhập môn Python.</field>
+            <field name="level">basic</field>
+            <field name="subject_id" ref="edu_subject_it"/>
+            <field name="responsible_id" ref="base.user_admin"/>
+        </record>
+
+        <record id="edu_classroom_101" model="edu.classroom">
+            <field name="name">Phòng 101</field>
+            <field name="capacity">30</field>
+        </record>
+
+        <record id="edu_product_fee_basic" model="product.template">
+            <field name="name">Học phí Python cơ bản</field>
+            <field name="is_edu_fee">True</field>
+            <field name="list_price">1000000</field>
+            <field name="currency_id" ref="base.VND"/>
+        </record>
+
+        <record id="edu_session_python_01" model="edu.session">
+            <field name="name">Lớp Python 01</field>
+            <field name="course_id" ref="edu_course_python_basic"/>
+            <field name="classroom_id" ref="edu_classroom_101"/>
+            <field name="start_date">2024-01-15</field>
+            <field name="duration">5</field>
+            <field name="product_id" ref="edu_product_fee_basic"/>
+        </record>
+    </data>
+</odoo>

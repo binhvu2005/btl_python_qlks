@@ -1,0 +1,22 @@
+{
+    "name": "Education Management",
+    "summary": "Quản lý khóa học, lớp học, giảng viên và học phí",
+    "version": "17.0.1.0.0",
+    "category": "Education",
+    "author": "Custom",
+    "application": True,
+    "depends": ["base", "product"],
+    "data": [
+        "security/edu_security.xml",
+        "security/ir.model.access.csv",
+        "data/ir_sequence_data.xml",
+        "data/edu_demo.xml",
+        "views/edu_course_views.xml",
+        "views/edu_session_views.xml",
+        "views/edu_classroom_views.xml",
+        "views/res_partner_views.xml",
+        "views/product_views.xml",
+        "views/edu_menus.xml",
+    ],
+    "license": "LGPL-3",
+}

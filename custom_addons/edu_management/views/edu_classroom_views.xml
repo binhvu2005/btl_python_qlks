@@ -1,0 +1,33 @@
+<odoo>
+    <record id="view_edu_classroom_tree" model="ir.ui.view">
+        <field name="name">edu.classroom.tree</field>
+        <field name="model">edu.classroom</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="capacity"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_edu_classroom_form" model="ir.ui.view">
+        <field name="name">edu.classroom.form</field>
+        <field name="model">edu.classroom</field>
+        <field name="arch" type="xml">
+            <form string="Phòng học">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="capacity"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_edu_classroom" model="ir.actions.act_window">
+        <field name="name">Phòng học</field>
+        <field name="res_model">edu.classroom</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+</odoo>

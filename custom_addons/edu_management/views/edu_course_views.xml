@@ -1,0 +1,131 @@
+<odoo>
+    <record id="view_edu_subject_tree" model="ir.ui.view">
+        <field name="name">edu.subject.tree</field>
+        <field name="model">edu.subject</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="description"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_edu_subject_form" model="ir.ui.view">
+        <field name="name">edu.subject.form</field>
+        <field name="model">edu.subject</field>
+        <field name="arch" type="xml">
+            <form string="Chuyên ngành">
+                <sheet>
+                    <group>
+                        <field name="name"/>
+                        <field name="code"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    <group>
+                        <field name="course_ids">
+                            <tree editable="bottom">
+                                <field name="name"/>
+                                <field name="level"/>
+                                <field name="responsible_id"/>
+                            </tree>
+                        </field>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="view_edu_course_tree" model="ir.ui.view">
+        <field name="name">edu.course.tree</field>
+        <field name="model">edu.course</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="name"/>
+                <field name="level"/>
+                <field name="subject_id"/>
+                <field name="responsible_id"/>
+                <field name="active"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_edu_course_search" model="ir.ui.view">
+        <field name="name">edu.course.search</field>
+        <field name="model">edu.course</field>
+        <field name="arch" type="xml">
+            <search string="Tìm khóa học">
+                <field name="name"/>
+                <field name="responsible_id"/>
+                <field name="subject_id"/>
+                <filter name="inactive" string="Khóa học đang đóng" domain="[('active','=',False)]"/>
+                <group expand="0" string="Group By">
+                    <filter string="Chuyên ngành" name="group_subject" context="{'group_by':'subject_id'}"/>
+                    <filter string="Người phụ trách" name="group_responsible" context="{'group_by':'responsible_id'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <record id="view_edu_course_form" model="ir.ui.view">
+        <field name="name">edu.course.form</field>
+        <field name="model">edu.course</field>
+        <field name="arch" type="xml">
+            <form string="Khóa học">
+                <header>
+                    <button name="%(action_edu_session)d" string="Lớp học" type="action" 
+                            class="oe_stat_button" icon="fa-graduation-cap"
+                            context="{'search_default_course_id': active_id, 'default_course_id': active_id}">
+                        <field name="session_count" widget="statinfo" string="Lớp học"/>
+                    </button>
+                </header>
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="name"/>
+                            <field name="level"/>
+                            <field name="active"/>
+                        </group>
+                        <group>
+                            <field name="subject_id"/>
+                            <field name="responsible_id"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Thông tin chung">
+                            <field name="description" widget="html"/>
+                        </page>
+                        <page string="Danh sách lớp">
+                            <field name="session_ids">
+                                <tree create="false" editable="bottom">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="state"/>
+                                    <field name="start_date"/>
+                                    <field name="duration"/>
+                                    <field name="instructor_id"/>
+                                    <field name="taken_seats" widget="progressbar"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_edu_subject" model="ir.actions.act_window">
+        <field name="name">Chuyên ngành</field>
+        <field name="res_model">edu.subject</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+
+    <record id="action_edu_course" model="ir.actions.act_window">
+        <field name="name">Khóa học</field>
+        <field name="res_model">edu.course</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_edu_course_search"/>
+    </record>
+</odoo>

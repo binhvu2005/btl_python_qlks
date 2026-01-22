@@ -1,0 +1,53 @@
+<odoo>
+    <record id="view_partner_form_education" model="ir.ui.view">
+        <field name="name">res.partner.form.education</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="base.view_partner_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='category_id']" position="before">
+                <field name="is_instructor"/>
+            </xpath>
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="%(action_edu_session)d" string="Lớp đang dạy" type="action" 
+                        class="oe_stat_button" icon="fa-graduation-cap"
+                        modifiers="{'invisible': [['is_instructor', '=', False]]}"
+                        context="{'search_default_instructor_id': active_id, 'default_instructor_id': active_id}">
+                    <field name="session_teaching_count" widget="statinfo" string="Lớp"/>
+                </button>
+            </xpath>
+            <xpath expr="//page[@name='sales_purchases']" position="after">
+                <page string="Education" name="education">
+                    <group>
+                        <group>
+                            <field name="is_instructor"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Lớp đang dạy">
+                            <field name="session_teaching_ids">
+                                <tree create="false" edit="false">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="course_id"/>
+                                    <field name="start_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                        <page string="Lớp đang học">
+                            <field name="session_attending_ids">
+                                <tree create="false" edit="false">
+                                    <field name="name"/>
+                                    <field name="code"/>
+                                    <field name="course_id"/>
+                                    <field name="start_date"/>
+                                    <field name="state"/>
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

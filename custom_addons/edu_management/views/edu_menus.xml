@@ -1,0 +1,39 @@
+<odoo>
+    <menuitem id="menu_edu_root" name="Đào tạo" sequence="10" groups="edu_management.group_edu_user"/>
+
+    <menuitem
+        id="menu_edu_courses"
+        name="Khóa học"
+        parent="menu_edu_root"
+        action="action_edu_course"
+        sequence="10"
+        groups="edu_management.group_edu_user"
+    />
+
+    <menuitem
+        id="menu_edu_sessions"
+        name="Lớp học"
+        parent="menu_edu_root"
+        action="action_edu_session"
+        sequence="20"
+        groups="edu_management.group_edu_user"
+    />
+
+    <menuitem
+        id="menu_edu_classrooms"
+        name="Phòng học"
+        parent="menu_edu_root"
+        action="action_edu_classroom"
+        sequence="30"
+        groups="edu_management.group_edu_user"
+    />
+
+    <menuitem
+        id="menu_edu_subjects"
+        name="Chuyên ngành"
+        parent="menu_edu_root"
+        action="action_edu_subject"
+        sequence="40"
+        groups="edu_management.group_edu_user"
+    />
+</odoo>

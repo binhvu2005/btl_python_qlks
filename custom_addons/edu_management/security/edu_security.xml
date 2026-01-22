@@ -1,0 +1,35 @@
+<odoo>
+    <data noupdate="1">
+        <record id="group_edu_user" model="res.groups">
+            <field name="name">Education User</field>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+        </record>
+
+        <record id="group_edu_manager" model="res.groups">
+            <field name="name">Education Manager</field>
+            <field name="implied_ids" eval="[(4, ref('group_edu_user'))]"/>
+            <field name="category_id" ref="base.module_category_human_resources"/>
+        </record>
+
+        <record id="rule_edu_course_user" model="ir.rule">
+            <field name="name">Edu course user access</field>
+            <field name="model_id" ref="model_edu_course"/>
+            <field name="groups" eval="[(4, ref('group_edu_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+
+        <record id="rule_edu_session_user" model="ir.rule">
+            <field name="name">Edu session user access</field>
+            <field name="model_id" ref="model_edu_session"/>
+            <field name="groups" eval="[(4, ref('group_edu_user'))]"/>
+            <field name="domain_force">['|', ('create_uid', '=', user.id), ('course_id.responsible_id', '=', user.id)]</field>
+        </record>
+
+        <record id="rule_edu_classroom_user" model="ir.rule">
+            <field name="name">Edu classroom user access</field>
+            <field name="model_id" ref="model_edu_classroom"/>
+            <field name="groups" eval="[(4, ref('group_edu_user'))]"/>
+            <field name="domain_force">[(1, '=', 1)]</field>
+        </record>
+    </data>
+</odoo>

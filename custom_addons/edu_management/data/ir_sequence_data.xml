@@ -1,0 +1,10 @@
+<odoo>
+    <data noupdate="1">
+        <record id="seq_edu_session" model="ir.sequence">
+            <field name="name">Education Session</field>
+            <field name="code">edu.session</field>
+            <field name="prefix">SESS/</field>
+            <field name="padding">5</field>
+        </record>
+    </data>
+</odoo>
